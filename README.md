@@ -53,6 +53,7 @@ npm install
 Create a `.env.local` file in the root directory with the following variables:
 
 env
+```
 NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=
 CLERK_SECRET_KEY=
 NEXT_PUBLIC_CLERK_SIGN_IN_URL=
@@ -63,6 +64,7 @@ OPENAI_API_KEY=
 STRIPE_SECRET_KEY=
 STRIPE_WEBHOOK_SECRET=
 NEXT_PUBLIC_APP_URL=
+```
 
 4. Start the development server:
 
