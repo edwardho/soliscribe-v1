@@ -77,10 +77,13 @@ npm run dev
 ## Usage
 
 1. Sign up for an account or log in
-2. Paste your Solidity smart contract code in the editor
-3. The AI will automatically analyze your code and generate documentation
-4. Review and edit the generated documentation as needed
-5. Export the documentation in your preferred format
+2. Create a new notebook or open an existing one
+3. Start taking notes with AI-assisted features:
+   - Use the context ingestion for importing external content
+   - Leverage the AI chat agent for assistance
+   - Enable inline AI editing for smart suggestions
+4. Organize and manage your notes with the multi-file system
+5. Use the smart search to find relevant content across your notebooks
 
 ## Tech Stack
 
