@@ -3,15 +3,14 @@
 import { trpc } from '@/app/_trpc/client'
 import { getUserSubscriptionPlan } from '@/lib/stripe'
 import { PLANS } from '@/config/stripe'
-import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from './ui/card'
+import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { useState, useRef, useEffect, CSSProperties, useCallback } from 'react'
 import { format } from 'date-fns'
-import MaxWidthWrapper from './MaxWidthWrapper'
 import { useToast } from '@/hooks/use-toast'
-import UpgradeButton from './UpgradeButton'
+import UpgradeButton from '../UpgradeButton'
 import { cn } from '@/lib/utils'
 import { Loader2 } from 'lucide-react'
-import { Button } from './ui/button'
+import { Button } from '../ui/button'
 
 interface BillingFormProps {
   subscriptionPlan: Awaited<ReturnType<typeof getUserSubscriptionPlan>>
@@ -21,7 +20,6 @@ const BillingForm = ({ subscriptionPlan }: BillingFormProps) => {
   const { toast } = useToast()
   const [isYearly, setIsYearly] = useState<boolean>(false)
   
-  // Add refs at component level
   const proBoxRef = useRef<HTMLDivElement>(null);
   const eliteBoxRef = useRef<HTMLDivElement>(null);
   const currentPlanRef = useRef<HTMLDivElement>(null);
@@ -42,7 +40,6 @@ const BillingForm = ({ subscriptionPlan }: BillingFormProps) => {
     }
   })
 
-  // Move animation logic outside of map
   const updateAnimation = useCallback((element: HTMLDivElement) => {
     const angle = (parseFloat(element.style.getPropertyValue("--angle")) + 0.5) % 360;
     element.style.setProperty("--angle", `${angle}deg`);
@@ -57,15 +54,12 @@ const BillingForm = ({ subscriptionPlan }: BillingFormProps) => {
     });
   }, [updateAnimation]);
 
-  // Get current plan's index to filter out lower tier plans
   const currentPlanIndex = PLANS.findIndex(plan => {
     const currentSlug = subscriptionPlan?.slug || 'free'
-    // Match both yearly and monthly versions of the same plan
     return plan.slug === currentSlug || 
            (plan.slug.replace('-yearly', '') === currentSlug.replace('-yearly', ''))
   })
 
-  // Filter plans based on billing period and show free plan if not subscribed
   const filteredPlans = PLANS.filter((plan) => {
     if (plan.slug === 'free') return !subscriptionPlan?.isSubscribed
     const matchesBillingPeriod = isYearly ? plan.slug.includes('yearly') : !plan.slug.includes('yearly')
@@ -74,24 +68,28 @@ const BillingForm = ({ subscriptionPlan }: BillingFormProps) => {
   })
 
   return (
-    <MaxWidthWrapper className='max-w-5xl'>
+    <div className='max-w-5xl mx-auto'>
       <form
         className='mt-12'
         onSubmit={(e) => {
           e.preventDefault()
           createStripeSession({ planId: subscriptionPlan?.slug || 'free' })
         }}>
-        <Card>
+        <Card className="bg-card text-card-foreground">
           <CardHeader>
-            <CardTitle>Subscription Plan</CardTitle>
-            <CardDescription>
+            <CardTitle className="text-foreground">Subscription Plan</CardTitle>
+            <CardDescription className="text-muted-foreground">
               You are currently on the{' '}
-              <strong>{!subscriptionPlan || !subscriptionPlan.isSubscribed ? 'Free' : subscriptionPlan.name}</strong> plan.
+              <strong className="text-foreground">{!subscriptionPlan || !subscriptionPlan.isSubscribed ? 'Free' : subscriptionPlan.name}</strong> plan.
             </CardDescription>
           </CardHeader>
 
           <CardFooter className='flex flex-col items-start space-y-2 md:flex-row md:justify-between md:space-x-0'>
-            <Button type='submit'>
+            <Button 
+              variant="default"
+              type='submit'
+              className="bg-primary text-primary-foreground hover:bg-primary/90"
+            >
               {isPending ? (
                 <Loader2 className='mr-4 h-4 w-4 animate-spin' />
               ) : null}
@@ -100,7 +98,7 @@ const BillingForm = ({ subscriptionPlan }: BillingFormProps) => {
                 : 'Upgrade'}
             </Button>
             {subscriptionPlan?.isSubscribed ? (
-              <p className='rounded-full text-xs font-medium'>
+              <p className='rounded-full text-xs font-medium text-muted-foreground'>
                 {subscriptionPlan.isCanceled
                   ? 'Your plan will be canceled on '
                   : 'Your plan renews on '}
@@ -115,23 +113,23 @@ const BillingForm = ({ subscriptionPlan }: BillingFormProps) => {
         </Card>
       </form>
       <div className='flex items-center justify-center gap-4 mb-8 mt-8'>
-        <span className={cn('text-sm', !isYearly && 'font-semibold')}>Monthly</span>
+        <span className={cn('text-sm text-foreground', !isYearly && 'font-semibold')}>Monthly</span>
         <div
           className={cn(
             'h-6 w-12 rounded-full cursor-pointer transition-colors',
-            isYearly ? 'bg-green-600' : 'bg-gray-200'
+            isYearly ? 'bg-primary' : 'bg-accent'
           )}
           onClick={() => setIsYearly(prev => !prev)}
         >
           <div
             className={cn(
-              'h-5 w-5 rounded-full bg-white transform transition-transform duration-200 translate-y-[2px]',
+              'h-5 w-5 rounded-full bg-background transform transition-transform duration-200 translate-y-[2px]',
               isYearly ? 'translate-x-6' : 'translate-x-1'
             )}
           />
         </div>
-        <span className={cn('text-sm', isYearly && 'font-semibold')}>Yearly</span>
-          <span className='bg-green-100 text-green-800 text-xs font-medium px-2 py-1 rounded'>Save 25%</span>
+        <span className={cn('text-sm text-foreground', isYearly && 'font-semibold')}>Yearly</span>
+        <span className='bg-primary/20 text-primary text-xs font-medium px-2 py-1 rounded'>Save 25%</span>
       </div>
 
       <form className='mt-12'>
@@ -144,7 +142,6 @@ const BillingForm = ({ subscriptionPlan }: BillingFormProps) => {
             const isPro = plan.name === 'Pro' || plan.name === 'Pro Yearly'
             const isElite = plan.name === 'Elite' || plan.name === 'Elite Yearly'
 
-            // Determine which ref to use
             const boxRef = isCurrentPlan ? currentPlanRef : 
                           isPro ? proBoxRef : 
                           isElite ? eliteBoxRef : null;
@@ -176,26 +173,26 @@ const BillingForm = ({ subscriptionPlan }: BillingFormProps) => {
                 )}
               >
                 <Card className={cn(
-                  'h-full',
-                  (isPro || isElite) && !isCurrentPlan && 'bg-white rounded-lg'
+                  'h-full bg-card text-card-foreground',
+                  (isPro || isElite) && !isCurrentPlan && 'rounded-lg'
                 )}>
                   <CardHeader>
                     <div className='relative w-full'>
                       {yearlyPrice && !isCurrentPlan && (
-                        <span className='absolute right-0 top-0 bg-green-100 text-green-800 text-sm font-bold px-2 py-1 rounded-lg shadow-sm transform -translate-y-2 hover:scale-105 transition-transform'>
+                        <span className='absolute right-0 top-0 bg-primary/20 text-primary text-sm font-bold px-2 py-1 rounded-lg shadow-sm transform -translate-y-2 hover:scale-105 transition-transform'>
                           Save ${plan.name.includes('Pro') ? 4 : 7}/mo
                         </span>
                       )}
-                      <CardTitle>{plan.name}</CardTitle>
+                      <CardTitle className="text-foreground">{plan.name}</CardTitle>
                     </div>
-                    <CardDescription>
+                    <CardDescription className="text-muted-foreground">
                       {!isCurrentPlan && (
                         yearlyPrice ? (
                           <div className='flex flex-col'>
-                            <span className='text-gray-400 line-through text-md'>
+                            <span className='text-muted-foreground line-through text-md'>
                               ${plan.name.includes('Pro') ? '15' : '25'}/month
                             </span>
-                            <span className='text-lg font-bold'>
+                            <span className='text-lg font-bold text-foreground'>
                               ${plan.name.includes('Pro') ? '11' : '18'}/month
                             </span>
                             <span className='text-sm text-muted-foreground'>billed annually</span>
@@ -209,7 +206,7 @@ const BillingForm = ({ subscriptionPlan }: BillingFormProps) => {
 
                   <CardFooter className='flex flex-col items-start gap-4'>
                     <div>
-                      <p className='font-medium'>Features include:</p>
+                      <p className='font-medium text-foreground'>Features include:</p>
                       <ul className='mt-2 space-y-2 text-sm text-muted-foreground'>
                         <li>
                           {plan.quota.toLocaleString()} files
@@ -235,7 +232,7 @@ const BillingForm = ({ subscriptionPlan }: BillingFormProps) => {
         </div>
       </form>
       
-    </MaxWidthWrapper>
+    </div>
   )
 }
 
