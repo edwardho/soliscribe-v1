@@ -4,7 +4,7 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   images: {
-    domains: ['gravatar.com']
+    domains: ['gravatar.com', process.env.NEXT_PUBLIC_APP_URL]
   },
   webpack: (config, {buildId, dev, isServer, defaultLoaders, webpack}) => {
     config.resolve.alias.canvas = false
@@ -24,6 +24,9 @@ const nextConfig = {
         permanent: true,
       },
     ]
+  },
+  experimental: {
+    appDir: true
   }
 };
 
