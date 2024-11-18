@@ -7,20 +7,25 @@ import { getUserSubscriptionPlan } from '@/lib/stripe'
 
 const Page = async () => {
     const user = await auth()
+
+    if (!user || !user.id) {
+        redirect('/sign-in')
+        return
+    }
+
     const subscriptionPlan = await getUserSubscriptionPlan()
-
-    if (!user || !user.id) redirect('/auth-callback?origin=dashboard')
-
     const dbUser = await db.user.findUnique({
         where: {
             id: user.id
         }
     })
 
-    if (!dbUser) redirect('/auth-callback?origin=dashboard')
+    if (!dbUser) {
+        redirect('/auth-callback?origin=dashboard')
+        return
+    }
 
-        return <Dashboard subscriptionPlan={subscriptionPlan} />
-
+    return <Dashboard subscriptionPlan={subscriptionPlan} />
 }
 export default Page
 

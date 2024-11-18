@@ -14,12 +14,8 @@ const FilePage = async ({ params }: PageProps) => {
   const { fileid } = resolvedParams
 
   const user = await auth()
-  console.log('User auth:', user)
 
-  if (!user || !user.id) {
-    console.log('Redirecting to auth-callback - no user:', user)
-    redirect(`/auth-callback?origin=dashboard/${fileid}`)
-  }
+  if (!user || !user.id) redirect(`/auth-callback?origin=dashboard/${fileid}`)
 
   const file = await db.file.findUnique({
     where: {
@@ -28,10 +24,7 @@ const FilePage = async ({ params }: PageProps) => {
     },
   })
 
-  if (!file) {
-    console.log('Redirecting to not found - no file found for user:', user.id)
-    notFound()
-  }
+  if (!file) notFound()
 
   return <FilePageClient file={file} />
 }

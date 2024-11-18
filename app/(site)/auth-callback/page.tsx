@@ -20,20 +20,53 @@ const AuthCallback = () => {
     const router = useRouter()
     const searchParams = useSearchParams()
     const origin = searchParams.get('origin')
-    const { data, isSuccess, error } = trpc.authCallback.useQuery(undefined, {
-        retry: true,
+    
+    console.log('AuthCallback - Initial render, origin:', origin)
+    
+    const { data, isSuccess, error, isError } = trpc.authCallback.useQuery(undefined, {
+        retry: 3,
         retryDelay: 500,
+        onError: (err) => {
+            console.error('AuthCallback - TRPC Error:', err)
+        },
+        onSuccess: (data) => {
+            console.log('AuthCallback - TRPC Success:', data)
+        }
     })
 
     React.useEffect(() => {
-        if (isSuccess) {
-            // user is synced to db
-            router.push(origin ? `/${origin}` : '/dashboard')
-        }
+        console.log('AuthCallback - Effect triggered', {
+            isSuccess,
+            isError,
+            hasData: !!data,
+            errorCode: error?.data?.code
+        })
+
         if (error?.data?.code === 'UNAUTHORIZED') {
+            console.log('AuthCallback - Unauthorized, redirecting to sign-in')
             router.push('/sign-in')
+            return
         }
-    }, [data, error, origin, router, isSuccess])
+
+        if (isSuccess && data) {
+            const redirectPath = origin ? `/${origin}` : '/dashboard'
+            console.log('AuthCallback - Success, redirecting to:', redirectPath)
+            router.push(redirectPath)
+            return
+        }
+
+        const timeout = setTimeout(() => {
+            if (!isSuccess && !isError) {
+                console.log('AuthCallback - Timeout reached, redirecting to sign-in')
+                router.push('/sign-in')
+            }
+        }, 10000)
+
+        return () => {
+            console.log('AuthCallback - Cleaning up timeout')
+            clearTimeout(timeout)
+        }
+    }, [data, error, origin, router, isSuccess, isError])
     
     return (
         <div className='w-full mt-24 flex justify-center'>
