@@ -122,10 +122,18 @@ export default function HeaderClient({
               )}
             </div>
 
-            <div className="flex items-center gap-5">
-              <ThemeToggler />
-              {children}
-              <MobileNav isAuth={!!user} />
+            <div className="flex items-center">
+              {/* Desktop view */}
+              <div className="hidden sm:flex sm:items-center">
+                <ThemeToggler />
+                {children}
+              </div>
+              
+              {/* Mobile view */}
+              <div className="flex items-center gap-2 sm:hidden">
+                <ThemeToggler />
+                <MobileNav isAuth={!!user} />
+              </div>
             </div>
           </div>
         </div>

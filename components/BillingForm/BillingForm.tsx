@@ -117,7 +117,7 @@ const BillingForm = ({ subscriptionPlan }: BillingFormProps) => {
         <div
           className={cn(
             'h-6 w-12 rounded-full cursor-pointer transition-colors',
-            isYearly ? 'bg-primary' : 'bg-accent'
+            isYearly ? 'bg-green-600' : 'bg-slate-200'
           )}
           onClick={() => setIsYearly(prev => !prev)}
         >
@@ -129,7 +129,7 @@ const BillingForm = ({ subscriptionPlan }: BillingFormProps) => {
           />
         </div>
         <span className={cn('text-sm text-foreground', isYearly && 'font-semibold')}>Yearly</span>
-        <span className='bg-primary/20 text-primary text-xs font-medium px-2 py-1 rounded'>Save 25%</span>
+        <span className='bg-green-100 text-green-700 text-xs font-medium px-2 py-1 rounded'>Save 25%</span>
       </div>
 
       <form className='mt-12'>
@@ -179,7 +179,7 @@ const BillingForm = ({ subscriptionPlan }: BillingFormProps) => {
                   <CardHeader>
                     <div className='relative w-full'>
                       {yearlyPrice && !isCurrentPlan && (
-                        <span className='absolute right-0 top-0 bg-primary/20 text-primary text-sm font-bold px-2 py-1 rounded-lg shadow-sm transform -translate-y-2 hover:scale-105 transition-transform'>
+                        <span className='absolute right-0 top-0 bg-green-100 text-green-700 text-sm font-bold px-2 py-1 rounded-lg shadow-sm transform -translate-y-2 hover:scale-105 transition-transform'>
                           Save ${plan.name.includes('Pro') ? 4 : 7}/mo
                         </span>
                       )}

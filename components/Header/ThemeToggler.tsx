@@ -21,7 +21,7 @@ const ThemeToggler = () => {
       variant="ghost"
       size="icon"
       onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-      className="absolute right-17 mr-1.5 lg:static"
+      className="lg:static"
     >
       {theme === "dark" ? (
         <Sun className="h-[1.2rem] w-[1.2rem]" />

@@ -3,18 +3,18 @@
 import { ArrowRight, Menu } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState } from 'react'
 
 const MobileNav = ({ isAuth }: { isAuth: boolean }) => {
   const [isOpen, setOpen] = useState<boolean>(false)
 
-  const toggleOpen = useCallback(() => setOpen((prev) => !prev), [])
+  const toggleOpen = () => setOpen((prev) => !prev)
 
   const pathname = usePathname()
 
   useEffect(() => {
     if (isOpen) toggleOpen()
-  }, [pathname, isOpen, toggleOpen])
+  }, [pathname])
 
   const closeOnCurrent = (href: string) => {
     if (pathname === href) {

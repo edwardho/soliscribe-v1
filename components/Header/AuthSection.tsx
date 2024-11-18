@@ -13,7 +13,7 @@ export default function AuthSection() {
   const { user } = useKindeBrowserClient()
 
   return (
-    <div className='hidden items-center space-x-4 sm:flex'>
+    <div className='hidden items-center space-x-4 sm:flex ml-4'>
       {!user ? (
         <>
           <LoginLink
