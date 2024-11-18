@@ -3,14 +3,17 @@ import { db } from '@/db'
 import { auth } from '@/lib/auth'
 import { notFound, redirect } from 'next/navigation'
 
-type Props = {
+// Import the correct types from Next.js
+import { Metadata } from 'next'
+
+interface PageProps {
   params: {
     fileid: string
   }
-  searchParams: { [key: string]: string | string[] | undefined }
 }
 
-const FilePage = async ({ params }: Props) => {
+// Mark the component as a Page component
+export default async function Page({ params }: PageProps) {
   const { fileid } = params
 
   const user = await auth()
@@ -33,4 +36,8 @@ const FilePage = async ({ params }: Props) => {
   return <FilePageClient file={file} />
 }
 
-export default FilePage
+// Optionally, add metadata
+export const metadata: Metadata = {
+  title: 'File View',
+  description: 'View and edit your file',
+}
