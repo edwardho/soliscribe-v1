@@ -104,7 +104,7 @@ const Contact = () => {
                     <div className="mb-4 flex items-center space-x-2 md:mb-0">
                       <Checkbox id="terms" />
                       <Label htmlFor="terms" className="text-sm">
-                        By clicking Checkbox, you agree to use our "Form" terms
+                        By clicking Checkbox, you agree to use our &quot;Form&quot; terms
                         And consent cookie usage in browser.
                       </Label>
                     </div>
