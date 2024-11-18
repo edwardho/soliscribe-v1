@@ -4,13 +4,14 @@ import { auth } from '@/lib/auth'
 import { notFound, redirect } from 'next/navigation'
 
 interface PageProps {
-  params: {
+  params: Promise<{
     fileid: string
-  }
+  }>
 }
 
 const FilePage = async ({ params }: PageProps) => {
-  const { fileid } = params
+  const resolvedParams = await params
+  const { fileid } = resolvedParams
 
   const user = await auth()
 
