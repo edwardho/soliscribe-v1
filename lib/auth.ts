@@ -1,6 +1,6 @@
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server"
 
-export const auth = () => {
+export const auth = async () => {
     const { getUser } = getKindeServerSession()
-    return getUser()
+    return await getUser()
 } 

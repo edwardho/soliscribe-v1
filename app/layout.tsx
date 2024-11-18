@@ -1,5 +1,6 @@
 "use client";
 
+import { AuthProvider } from "./AuthProvider";
 import Header from "@/components/Header";
 import Stars from "@/components/Stars";
 import { ThemeProvider } from "next-themes";
@@ -22,18 +23,20 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`dark:bg-black ${inter.className}`}>
-        <ThemeProvider
-          enableSystem={false}
-          attribute="class"
-          defaultTheme="light"
-        >
-          <Providers>
-            <Stars />
-            <Header />
-            <ToasterContext />
-            {children}
-          </Providers>
-        </ThemeProvider>
+        <AuthProvider>
+          <ThemeProvider
+            enableSystem={false}
+            attribute="class"
+            defaultTheme="light"
+          >
+            <Providers>
+              <Stars />
+              <Header />
+              <ToasterContext />
+              {children}
+            </Providers>
+          </ThemeProvider>
+        </AuthProvider>
       </body>
     </html>
   );
