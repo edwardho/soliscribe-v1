@@ -14,7 +14,7 @@ export default function HeaderClient({
 }: { 
   children: React.ReactNode 
 }) {
-  const [navigationOpen, setNavigationOpen] = useState(false);
+  const [navigationOpen] = useState(false);
   const [dropdownToggler, setDropdownToggler] = useState(false);
   const [stickyMenu, setStickyMenu] = useState(false);
   const [mounted, setMounted] = useState(false);
