@@ -24,7 +24,7 @@ export const config = {
          * - _next/image (image optimization files)
          * - favicon.ico (favicon file)
          * - images (public images)
-        * - pricing
+         * - pricing
          * - docs
          * - terms
          * - privacy

@@ -1,6 +1,7 @@
 'use client'
 
 import { FC } from 'react'
+import ScrollToTop from '@/components/ScrollToTop'
 
 const PrivacyPage: FC = () => {
   return (
@@ -140,6 +141,7 @@ const PrivacyPage: FC = () => {
           </section> */}
         </div>
       </main>
+      <ScrollToTop />
     </div>
   )
 }

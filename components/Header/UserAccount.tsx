@@ -11,7 +11,7 @@ import { Button } from '../ui/button'
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 import Image from 'next/image'
 import Link from 'next/link'
-import { Gem } from 'lucide-react'
+import { Gem, LogOut } from 'lucide-react'
 import { LogoutLink } from '@kinde-oss/kinde-auth-nextjs/components'
 import { User } from 'lucide-react'
 import { useEffect, useState } from 'react'
@@ -129,8 +129,8 @@ const UserAccount = ({
         <DropdownMenuSeparator />
 
         <DropdownMenuItem>
-            <LogoutLink href="/api/auth/logout">
-                Sign Out
+            <LogoutLink href="/api/auth/logout" className="flex w-full items-center justify-between">
+                Sign Out <LogOut className="h-4 w-4" />
             </LogoutLink>
         </DropdownMenuItem>
       </DropdownMenuContent>

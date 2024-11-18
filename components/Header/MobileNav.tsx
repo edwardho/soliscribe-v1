@@ -1,9 +1,11 @@
 'use client'
 
-import { ArrowRight, Menu } from 'lucide-react'
+import { ArrowRight, LogOut, Menu } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import { Button } from "@/components/ui/button"
+import { Separator } from "@/components/ui/separator"
 
 const MobileNav = ({ isAuth }: { isAuth: boolean }) => {
   const [isOpen, setOpen] = useState<boolean>(false)
@@ -13,7 +15,6 @@ const MobileNav = ({ isAuth }: { isAuth: boolean }) => {
   const pathname = usePathname()
 
   useEffect(() => {
-    if (isOpen) toggleOpen()
   }, [pathname])
 
   const closeOnCurrent = (href: string) => {
@@ -24,79 +25,98 @@ const MobileNav = ({ isAuth }: { isAuth: boolean }) => {
 
   return (
     <div className='sm:hidden'>
-      <Menu
+      <Button
+        variant="ghost"
+        size="icon"
         onClick={toggleOpen}
-        className='relative z-50 h-5 w-5 text-zinc-700'
-      />
+        className='relative z-50'
+      >
+        <Menu className='h-5 w-5 text-foreground' />
+      </Button>
 
       {isOpen ? (
         <div className='fixed animate-in slide-in-from-top-5 fade-in-20 inset-0 z-0 w-full'>
-          <ul className='absolute bg-white border-b border-zinc-200 shadow-xl grid w-full gap-3 px-10 pt-20 pb-8'>
+          <ul className='absolute bg-background border-b shadow-lg grid w-full gap-3 px-6 pt-20 pb-8'>
             {!isAuth ? (
               <>
                 <li>
-                  <Link
-                    onClick={() =>
-                      closeOnCurrent('/sign-up')
-                    }
-                    className='flex items-center w-full font-semibold text-green-600'
-                    href='/sign-up'>
-                    Get started
-                    <ArrowRight className='ml-2 h-5 w-5' />
-                  </Link>
+                  <Button
+                    asChild
+                    variant="default"
+                    className='w-full justify-start'
+                    onClick={() => closeOnCurrent('/sign-up')}
+                  >
+                    <Link href='/sign-up'>
+                      Get started
+                      <ArrowRight className='ml-2 h-4 w-4' />
+                    </Link>
+                  </Button>
                 </li>
-                <li className='my-3 h-px w-full bg-gray-300' />
+                <Separator className="my-2" />
                 <li>
-                  <Link
-                    onClick={() =>
-                      closeOnCurrent('/sign-in')
-                    }
-                    className='flex items-center w-full font-semibold'
-                    href='/sign-in'>
-                    Sign in
-                  </Link>
+                  <Button
+                    asChild
+                    variant="ghost"
+                    className='w-full justify-start'
+                    onClick={() => closeOnCurrent('/sign-in')}
+                  >
+                    <Link href='/sign-in'>
+                      Sign in
+                    </Link>
+                  </Button>
                 </li>
-                <li className='my-3 h-px w-full bg-gray-300' />
+                <Separator className="my-2" />
                 <li>
-                  <Link
-                    onClick={() =>
-                      closeOnCurrent('/pricing')
-                    }
-                    className='flex items-center w-full font-semibold'
-                    href='/pricing'>
-                    Pricing
-                  </Link>
+                  <Button
+                    asChild
+                    variant="ghost"
+                    className='w-full justify-start'
+                    onClick={() => closeOnCurrent('/pricing')}
+                  >
+                    <Link href='/pricing'>
+                      Pricing
+                    </Link>
+                  </Button>
                 </li>
               </>
             ) : (
               <>
                 <li>
-                  <Link
-                    onClick={() =>
-                      closeOnCurrent('/dashboard')
-                    }
-                    className='flex items-center w-full font-semibold'
-                    href='/dashboard'>
-                    Dashboard
-                  </Link>
+                  <Button
+                    asChild
+                    variant="ghost"
+                    className='w-full justify-start'
+                    onClick={() => closeOnCurrent('/dashboard')}
+                  >
+                    <Link href='/dashboard'>
+                      Dashboard
+                    </Link>
+                  </Button>
                 </li>
                 <li>
-                  <Link
-                    onClick={() => {
-                      toggleOpen()
-                    }}
-                    className='flex items-center w-full font-semibold'
-                    href='/dashboard/billing'>
-                    Manage Subscription
-                  </Link>
+                  <Button
+                    asChild
+                    variant="ghost"
+                    className='w-full justify-start'
+                    onClick={toggleOpen}
+                  >
+                    <Link href='/dashboard/billing'>
+                      Manage Subscription
+                    </Link>
+                  </Button>
                 </li>
-                <li className='my-3 h-px w-full bg-gray-300' />
+                <Separator className="my-2" />
                 <li>
-                  <Link
-                    className='flex items-center w-full font-semibold'
-                    href='/sign-out'>
-                    Sign out
-                  </Link>
+                  <Button
+                    asChild
+                    variant="ghost"
+                    className='w-full justify-start flex items-center gap-2'
+                  >
+                    <Link href='/sign-out'>
+                      Sign out
+                      <LogOut className="h-4 w-4" />
+                    </Link>
+                  </Button>
                 </li>
               </>
             )}

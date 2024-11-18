@@ -1,6 +1,7 @@
 'use client'
 
 import { FC } from 'react'
+import ScrollToTop from '@/components/ScrollToTop'
 
 const TermsPage: FC = () => {
   return (
@@ -175,7 +176,7 @@ We may revise these Terms from time to time by posting a modified version on our
             <p className='text-foreground'>You agree that, except as otherwise expressly provided in these Terms, there shall be no third-party beneficiaries to these Terms.</p>
 
             <h3 className='text-xl font-semibold mb-2 mt-4 text-foreground'>12.6 Entire Agreement</h3>
-            <p className='text-foreground'>These Terms (and all terms and conditions incorporated herein) constitute the entire agreement between you and Soliscribe, and supersede any prior agreements between you and Soliscribe on the subject matter. To the extent of any conflict or inconsistency between the provisions in these Terms and any other terms or resources referenced in these Terms, the terms contained directly in these Terms will first prevail; provided, however, that if there is a conflict or inconsistency between an applicable Customer Agreement and these Terms, the terms of the Customer Agreement will first prevail, followed by the provisions in these Terms, and then followed by the pages referenced in these Terms (e.g., the Privacy Statement). The applicable Customer will be responsible for notifying Managed Users of those conflicts or inconsistencies and until such time the terms set forth herein will be binding.</p>
+            <p className='text-foreground'>These Terms (and all terms and conditions incorporated herein)  constitute the entire agreement between you and Soliscribe, and supersede any prior agreements between you and Soliscribe on the subject matter. To the extent of any conflict or inconsistency between the provisions in these Terms and any other terms or resources referenced in these Terms, the terms contained directly in these Terms will first prevail; provided, however, that if there is a conflict or inconsistency between an applicable Customer Agreement and these Terms, the terms of the Customer Agreement will first prevail, followed by the provisions in these Terms, and then followed by the pages referenced in these Terms (e.g., the Privacy Statement). The applicable Customer will be responsible for notifying Managed Users of those conflicts or inconsistencies and until such time the terms set forth herein will be binding.</p>
 
             <h3 className='text-xl font-semibold mb-2 mt-4 text-foreground'>12.7 Translations</h3>
             <p className='text-foreground'>Any non-English translations of these Terms are provided for convenience only. In the event of any ambiguity or conflict between translations, the English version shall control.</p>
@@ -188,6 +189,7 @@ We may revise these Terms from time to time by posting a modified version on our
           </section>
         </div>
       </main>
+      <ScrollToTop />
     </div>
   )
 }
