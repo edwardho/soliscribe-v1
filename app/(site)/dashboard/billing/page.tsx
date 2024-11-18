@@ -7,7 +7,7 @@ const Page = async () => {
     const user = await auth()
     
     if (!user) {
-        redirect('/auth/login')
+        redirect('/sign-in')
     }
 
     try {
@@ -15,7 +15,7 @@ const Page = async () => {
         return <BillingForm subscriptionPlan={subscriptionPlan} />
     } catch (error) {
         console.error('Error fetching subscription plan:', error)
-        redirect('/auth/login')
+        redirect('/sign-in')
     }
 }
 
