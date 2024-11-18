@@ -26,14 +26,23 @@ const AuthCallback = () => {
     const { data, isSuccess, error, isError } = trpc.authCallback.useQuery(undefined, {
         retry: 3,
         retryDelay: 500,
-        onError: (err) => {
-            console.error('AuthCallback - TRPC Error:', err)
-        },
-        onSuccess: (data) => {
-            console.log('AuthCallback - TRPC Success:', data)
-        }
     })
 
+    // Handle error state
+    React.useEffect(() => {
+        if (isError) {
+            console.error('AuthCallback - TRPC Error:', error)
+        }
+    }, [isError, error])
+
+    // Handle success state
+    React.useEffect(() => {
+        if (isSuccess) {
+            console.log('AuthCallback - TRPC Success:', data)
+        }
+    }, [isSuccess, data])
+
+    // Handle redirects
     React.useEffect(() => {
         console.log('AuthCallback - Effect triggered', {
             isSuccess,
