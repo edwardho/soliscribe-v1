@@ -9,14 +9,6 @@ import React from 'react'
 export const dynamic = 'force-dynamic'
 
 const AuthCallbackWrapper = () => {
-  return (
-    <Suspense>
-      <AuthCallback />
-    </Suspense>
-  )
-}
-
-const AuthCallbackWrapper = () => {
     return (
       <Suspense>
         <AuthCallback />
