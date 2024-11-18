@@ -17,8 +17,12 @@ export async function POST(request: Request) {
       signature,
       process.env.STRIPE_WEBHOOK_SECRET!
     )
-  } catch (error) {
-    return new NextResponse('Webhook error', { status: 400 })
+  } catch (err) {
+    console.error('Error verifying webhook signature:', err)
+    return new NextResponse(
+      JSON.stringify({ error: 'Invalid signature' }), 
+      { status: 400 }
+    )
   }
 
   const session = event.data
