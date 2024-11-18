@@ -20,62 +20,20 @@ const AuthCallback = () => {
     const router = useRouter()
     const searchParams = useSearchParams()
     const origin = searchParams.get('origin')
-    
-    console.log('AuthCallback - Initial render, origin:', origin)
-    
-    const { data, isSuccess, error, isError } = trpc.authCallback.useQuery(undefined, {
-        retry: 3,
+    const { data, isSuccess, error } = trpc.authCallback.useQuery(undefined, {
+        retry: true,
         retryDelay: 500,
     })
 
-    // Handle error state
-    React.useEffect(() => {
-        if (isError) {
-            console.error('AuthCallback - TRPC Error:', error)
-        }
-    }, [isError, error])
-
-    // Handle success state
     React.useEffect(() => {
         if (isSuccess) {
-            console.log('AuthCallback - TRPC Success:', data)
+            // user is synced to db
+            router.push(origin ? `/${origin}` : '/dashboard')
         }
-    }, [isSuccess, data])
-
-    // Handle redirects
-    React.useEffect(() => {
-        console.log('AuthCallback - Effect triggered', {
-            isSuccess,
-            isError,
-            hasData: !!data,
-            errorCode: error?.data?.code
-        })
-
         if (error?.data?.code === 'UNAUTHORIZED') {
-            console.log('AuthCallback - Unauthorized, redirecting to sign-in')
             router.push('/sign-in')
-            return
         }
-
-        if (isSuccess && data) {
-            const redirectPath = origin ? `/${origin}` : '/dashboard'
-            console.log('AuthCallback - Success, redirecting to:', redirectPath)
-            router.push(redirectPath)
-            return
-        }
-
-        const timeout = setTimeout(() => {
-            if (!isSuccess && !isError) {
-                console.log('AuthCallback - Timeout reached, redirecting to sign-in')
-                router.push('/sign-in')
-            }
-        }, 10000)
-
-        return () => {
-            console.log('AuthCallback - Cleaning up timeout')
-            clearTimeout(timeout)
-        }
-    }, [data, error, origin, router, isSuccess, isError])
+    }, [data, error, origin, router, isSuccess])
     
     return (
         <div className='w-full mt-24 flex justify-center'>

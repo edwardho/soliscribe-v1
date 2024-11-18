@@ -18,18 +18,18 @@ export const config = {
     matcher: [
         /*
          * Match all request paths except for the ones starting with:
-         * - pricing
-         * - docs
-         * - terms
-         * - privacy
-         * - contact
+
          * - api (API routes)
          * - _next/static (static files)
          * - _next/image (image optimization files)
          * - favicon.ico (favicon file)
-         * - public assets
          * - images (public images)
+        * - pricing
+         * - docs
+         * - terms
+         * - privacy
+         * - contact
          */
-        '/((?!pricing|docs|terms|privacy|contact|api|_next/static|_next/image|favicon.ico|images).*)',
+        '/((?!api|_next/static|_next/image|favicon.ico|images|pricing|docs|terms|privacy|contact).*)',
     ],
 }
