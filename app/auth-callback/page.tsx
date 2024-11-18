@@ -20,21 +20,20 @@ const AuthCallbackWrapper = () => {
       const router = useRouter()
       const searchParams = useSearchParams()
       const origin = searchParams.get('origin')
-      const { data, isSuccess, error } = trpc.authCallback.useQuery(undefined, {
-          retry: true,
+      const { data, isSuccess, error, isLoading } = trpc.authCallback.useQuery(undefined, {
+          retry: 1,
           retryDelay: 500,
       })
   
       React.useEffect(() => {
-          if (error) {
-              router.push('/sign-in')
-              return
-          }
-          
-          if (isSuccess && data) {
+          if (!isLoading && !error && isSuccess && data) {
               router.push(origin ? `/${origin}` : '/dashboard')
           }
-      }, [data, error, origin, router, isSuccess])
+          
+          if (error) {
+              router.push('/sign-in')
+          }
+      }, [data, error, isLoading, origin, router, isSuccess])
       
       return (
           <div className='w-full mt-24 flex justify-center'>

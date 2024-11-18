@@ -6,25 +6,23 @@ import { auth } from '@/lib/auth'
 import { getUserSubscriptionPlan } from '@/lib/stripe'
 
 const Page = async () => {
-    const session = await auth()
+    const user = await auth()
 
-    if (!session?.id) {
-        redirect('/auth-callback?origin=dashboard')
-    }
-
-    const [dbUser, subscriptionPlan] = await Promise.all([
-        db.user.findUnique({
-            where: {
-                id: session.id
-            }
-        }),
-        getUserSubscriptionPlan()
-    ])
-
-    if (!dbUser) {
+    if (!user) {
         redirect('/sign-in')
     }
 
+    const dbUser = await db.user.findUnique({
+        where: {
+            email: user.email!
+        }
+    })
+
+    if (!dbUser) {
+        redirect('/auth-callback?origin=dashboard')
+    }
+
+    const subscriptionPlan = await getUserSubscriptionPlan()
     return <Dashboard subscriptionPlan={subscriptionPlan} />
 }
 
