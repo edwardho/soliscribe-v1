@@ -1,11 +1,13 @@
 import { db } from '@/db'
 import { stripe } from '@/lib/stripe'
 import { headers } from 'next/headers'
+import { NextResponse } from 'next/server'
 import type Stripe from 'stripe'
 
 export async function POST(request: Request) {
   const body = await request.text()
-  const signature = headers().get('Stripe-Signature') ?? ''
+  const headersList = await headers()
+  const signature = headersList.get('Stripe-Signature') ?? ''
 
   let event: Stripe.Event
 
@@ -13,22 +15,17 @@ export async function POST(request: Request) {
     event = stripe.webhooks.constructEvent(
       body,
       signature,
-      process.env.STRIPE_WEBHOOK_SECRET || ''
+      process.env.STRIPE_WEBHOOK_SECRET!
     )
-  } catch (err) {
-    return new Response(
-      `Webhook Error: ${
-        err instanceof Error ? err.message : 'Unknown Error'
-      }`,
-      { status: 400 }
-    )
+  } catch (error) {
+    return new NextResponse('Webhook error', { status: 400 })
   }
 
   const session = event.data
     .object as Stripe.Checkout.Session
 
   if (!session?.metadata?.userId) {
-    return new Response(null, {
+    return new NextResponse(null, {
       status: 200,
     })
   }
@@ -74,5 +71,5 @@ export async function POST(request: Request) {
     })
   }
 
-  return new Response(null, { status: 200 })
+  return new NextResponse(null, { status: 200 })
 }
