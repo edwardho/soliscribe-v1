@@ -26,12 +26,13 @@ const AuthCallbackWrapper = () => {
       })
   
       React.useEffect(() => {
-          if (isSuccess) {
-              // user is synced to db
-              router.push(origin ? `/${origin}` : '/dashboard')
-          }
-          if (error?.data?.code === 'UNAUTHORIZED') {
+          if (error) {
               router.push('/sign-in')
+              return
+          }
+          
+          if (isSuccess && data) {
+              router.push(origin ? `/${origin}` : '/dashboard')
           }
       }, [data, error, origin, router, isSuccess])
       
