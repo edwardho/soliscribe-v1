@@ -1,16 +1,11 @@
-import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-export const metadata: Metadata = {
-  title: "Lost in Space - Soliscribe SaaS Boilerplate",
-  description: "Lost in the digital cosmos - Soliscribe error page",
-  // other metadata
-};
+// Remove metadata export as it's not needed for not-found pages
 
-const ErrorPage = () => {
+export default function NotFound() {
   return (
     <div className="h-screen w-full flex flex-col items-center justify-center">
       <div className="container flex flex-col items-center justify-center space-y-8">
@@ -57,6 +52,4 @@ const ErrorPage = () => {
       </div>
     </div>
   );
-};
-
-export default ErrorPage;
+}

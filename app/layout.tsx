@@ -5,13 +5,13 @@ import Stars from "@/components/Stars";
 import { ThemeProvider } from "next-themes";
 import { Inter } from "next/font/google";
 
-import "../globals.css";
+import "./globals.css";
 const inter = Inter({
   subsets: ['latin'],
   display: 'swap',
 })
 
-import ToasterContext from "../context/ToastContext";
+import ToasterContext from "./context/ToastContext";
 import Providers from "@/components/Providers";
 
 export default function RootLayout({
