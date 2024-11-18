@@ -93,7 +93,7 @@ const onUploadComplete = async ({
       pageLevelDocs,
       embeddings,
       {
-        //@ts-ignore - resolve type mismatch between Pinecone versions
+        //@ts-expect-error - resolve type mismatch between Pinecone versions
         pineconeIndex: pineconeIndex,
         namespace: createdFile.id,
       }
