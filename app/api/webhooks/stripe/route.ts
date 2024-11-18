@@ -6,8 +6,7 @@ import type Stripe from 'stripe'
 
 export async function POST(request: Request) {
   const body = await request.text()
-  const headersList = await headers()
-  const signature = headersList.get('Stripe-Signature') ?? ''
+  const signature = (await headers()).get('Stripe-Signature') ?? ''
 
   let event: Stripe.Event
 
@@ -15,12 +14,13 @@ export async function POST(request: Request) {
     event = stripe.webhooks.constructEvent(
       body,
       signature,
-      process.env.STRIPE_WEBHOOK_SECRET!
+      process.env.STRIPE_WEBHOOK_SECRET || ''
     )
   } catch (err) {
-    console.error('Error verifying webhook signature:', err)
-    return new NextResponse(
-      JSON.stringify({ error: 'Invalid signature' }), 
+    return new Response(
+      `Webhook Error: ${
+        err instanceof Error ? err.message : 'Unknown Error'
+      }`,
       { status: 400 }
     )
   }
@@ -29,7 +29,7 @@ export async function POST(request: Request) {
     .object as Stripe.Checkout.Session
 
   if (!session?.metadata?.userId) {
-    return new NextResponse(null, {
+    return new Response(null, {
       status: 200,
     })
   }
@@ -75,5 +75,5 @@ export async function POST(request: Request) {
     })
   }
 
-  return new NextResponse(null, { status: 200 })
+  return new Response(null, { status: 200 })
 }

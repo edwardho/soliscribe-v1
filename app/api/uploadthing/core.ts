@@ -89,10 +89,15 @@ const onUploadComplete = async ({
       openAIApiKey: process.env.OPENAI_API_KEY,
     });
 
-    await PineconeStore.fromDocuments(pageLevelDocs, embeddings, {
-      pineconeIndex,
-      namespace: createdFile.id,
-    });
+    await PineconeStore.fromDocuments(
+      pageLevelDocs,
+      embeddings,
+      {
+        //@ts-ignore - resolve type mismatch between Pinecone versions
+        pineconeIndex: pineconeIndex,
+        namespace: createdFile.id,
+      }
+    );
 
     await db.file.update({
       data: {

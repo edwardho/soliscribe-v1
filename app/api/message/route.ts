@@ -47,7 +47,7 @@ export const POST = async (req: NextRequest) => {
   })
 
   console.log("Creating Pinecone index for message...");
-  const pineconeIndex = pinecone.Index('soliscribe')
+  const pineconeIndex = pinecone.Index('soliscribe') as any
 
   const vectorStore = await PineconeStore.fromExistingIndex(
     embeddings,
