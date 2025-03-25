@@ -5,7 +5,7 @@ Soliscribe is an AI-assisted note-taking application with context ingestion, cha
 ## Tech Overview
 
 - **Architecture**: NextJS TypeScript monorepo
-- **Core Features**: Context ingestion, AI chat agent, note generation, inline AI editing
+- **Core Features**: Context ingestion, AI chat agent, note generation
 - **Frontend**: Next.js 14, shadcn UI components, Tiptap editor
 - **Backend**: tRPC and REST API endpoints
 - **Infrastructure**:
